@@ -57,8 +57,8 @@ pip install -r requirements.txt and install Azurite in extensions
 "IsEncrypted": false,
 "Values": {
 "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-"FUNCTIONS_WORKER_RUNTIME": "python",
-"TIMER_SCHEDULE": "0 _/5 _ \* \* \*"
+"FUNCTIONS*WORKER_RUNTIME": "python",
+"TIMER_SCHEDULE": "0 */5 \_ \* \* \*"
 }
 }
 example: timer is every 5 minutes
