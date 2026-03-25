@@ -85,7 +85,8 @@ df = df.dropna(subset=["timeStamp", "mtuStart", "area", "value"])
 
 
 default_areas= sorted(df["area"].dropna().unique().tolist())
-
+if "selected_areas" not in st.session_state:
+    st.session_state["selected_areas"] = default_areas
 col1, col2 = st.columns([7, 1]) 
 with col1: st.title("Energy Data Dashboard")
 with col2: 
@@ -104,8 +105,7 @@ option = st.selectbox(
 
 selected_areas = st.multiselect(
     "Select Area",
-    options=df["area"].unique(),
-    default=df["area"].unique(),
+    options=default_areas,
     key= "selected_areas"
 )
 
