@@ -8,4 +8,5 @@ streamlit
 pandas
 azure-storage-blob
 pytest
+plotly
 azure-cosmos
