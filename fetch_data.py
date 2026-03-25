@@ -23,7 +23,6 @@ def fetch_and_process_data():
      logging.error("Data is empty")
      return[]
     
-
     results = []
 
     for record in data["mfrrRequest"]:

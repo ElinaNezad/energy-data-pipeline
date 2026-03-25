@@ -1,7 +1,8 @@
 import logging
 import azure.functions as func
+from cosmos_helper import upsert_items_to_cosmos
 from fetch_data import fetch_and_process_data
-from storage_helper import upload_data_to_blob
+# from storage_helper import upload_data_to_blob
 
 app = func.FunctionApp()
 
@@ -16,7 +17,8 @@ def energyDataTimer(myTimer: func.TimerRequest) -> None:
         if not data:
             logging.error("No data fetched from API")
             return
-        upload_data_to_blob(data)
+        upsert_items_to_cosmos(data)
+        # upload_data_to_blob(data)
         logging.info(data)
 
     except Exception as e:
