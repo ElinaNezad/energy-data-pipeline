@@ -1,6 +1,6 @@
 # Energy Data Pipeline
 
-This project is an end-to-end data pipeline that fetches energy market data from an external API, stores it in Azure Blob Storage (or Azurite for local development), and visualizes it using a Streamlit dashboard.
+This project is an end-to-end data pipeline that fetches energy market data from an external API, stores it in Azure Cosmos DB, and visualizes it using a Streamlit dashboard.
 
 ---
 
@@ -8,32 +8,42 @@ This project is an end-to-end data pipeline that fetches energy market data from
 
 The solution includes three main components:
 
-- **Azure Function (Timer Trigger)**  
-  Periodically fetches data from the API
+### Azure Function (Timer Trigger)
 
-- **Blob Storage (Azure / Azurite)**  
-  Stores the latest data as a JSON file
+- Runs on a configurable schedule (e.g., every 5 minutes)
+- Fetches data from the external API
+- Processes and stores the data in Cosmos DB
 
-- **Streamlit Dashboard**  
-  Displays and visualizes the data
+### Azure Cosmos DB (NoSQL)
+
+- Stores structured data using the SQL API
+- Supports historical data storage
+- Enables efficient querying
+
+### Streamlit Dashboard
+
+- Reads data from Cosmos DB
+- Provides interactive filtering and visualization
+- Displays near real-time insights
 
 **Data Flow:**
 
-API → Azure Function → Blob Storage → Dashboard
+API → Azure Function → Cosmos DB → Dashboard
 
 ---
 
 ## Features
 
-- Fetch data from external API
-- Configurable timer trigger for periodic data fetching
-- Store data in Blob Storage
-- Local development using Azurite
+- Scheduled data ingestion (Timer Trigger)
+- Cloud-based storage using Cosmos DB
 - Interactive dashboard with:
-  - Latest values (DK1 / DK2)
-  - Filtering by area
-  - Time-series chart
-  - Last update indicator
+  - Latest data view
+  - Last week filtering
+  - Custom date range selection
+  - Area filtering (DK1 / DK2)
+  - Time-series visualization
+  - Timezone conversion (UTC → local time)
+  - Manual refresh button
 - Basic error handling
 - Unit testing with mocked API responses
 
@@ -58,26 +68,24 @@ pip install -r requirements.txt and install Azurite in extensions
 "Values": {
 "AzureWebJobsStorage": "UseDevelopmentStorage=true",
 "FUNCTIONS*WORKER_RUNTIME": "python",
-"TIMER_SCHEDULE": "0 */5 \_ \* \* \*"
+"TIMER_SCHEDULE": "0 */5 \* \* \* \*",
+"COSMOS_ENDPOINT": "your_endpoint",
+"COSMOS_KEY": "your_key"
+
 }
 }
 example: timer is every 5 minutes
 
-### 4. Run Azurite (Local Storage)
-
-in the first terminal:
-azurite --skipApiVersionCheck
-
-### 5. Run Azure Function
+### 4. Run Azure Function
 
 in the second terminal :
 func start
 
-### 6. Run Streamlit Dashboard
+### 5. Run Streamlit Dashboard
 
 in the third terminal:
 streamlit run dashboard.py
 
-### 7. Run Tests
+### 6. Run Tests
 
 pytest -v
